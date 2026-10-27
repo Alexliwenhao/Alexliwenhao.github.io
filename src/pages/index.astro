@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+import { t, type Lang } from '../i18n/ui';
+
+const lang: Lang = 'zh';
+const ui = t(lang);
+---
+
+<BaseLayout lang={lang} title={ui.siteTitle} description={ui.siteDescription} altHref="/en/">
+  <Hero lang={lang} />
+
+  <section class="section shell" id="products">
+    <SectionHeading eyebrow={ui.productsEyebrow} title={ui.productsTitle} />
+    <div class="product-grid">
+      {products.map((product, index) => (
+        <ProductCard product={product} lang={lang} index={index} />
+      ))}
+    </div>
+  </section>
+
+  <section class="section shell about" id="about">
+    <SectionHeading eyebrow={ui.aboutEyebrow} title={ui.aboutTitle} />
+    <p class="about-body">{ui.aboutBody}</p>
+  </section>
+</BaseLayout>

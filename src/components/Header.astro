@@ -1,0 +1,24 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  altHref: string;
+}
+
+const { lang, altHref } = Astro.props;
+const ui = t(lang);
+const home = lang === 'zh' ? '/' : '/en/';
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href={home}>Alex<span class="brand-dot">·</span>AI</a>
+    <nav class="nav" aria-label="Main">
+      <a href={`${home}#products`}>{ui.navProducts}</a>
+      <a href={`${home}#about`}>{ui.navAbout}</a>
+      <a href="https://github.com/Alexliwenhao" target="_blank" rel="noreferrer">GitHub ↗</a>
+    </nav>
+    <a class="lang" href={altHref} title={ui.switchTitle}>{ui.switchLabel}</a>
+  </div>
+</header>

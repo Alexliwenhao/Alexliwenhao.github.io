@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { products, type Product } from '../../data/products';
+import { t, type Lang } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const lang: Lang = 'zh';
+const ui = t(lang);
+const { product } = Astro.props;
+const altHref = `/en/products/${product.slug}/`;
+const pageTitle = `${product.name} · ${ui.siteTitle}`;
+const coverAlt = `${product.name} — ${product.tagline[lang]}`;
+---
+
+<BaseLayout lang={lang} title={pageTitle} description={product.description[lang]} altHref={altHref}>
+  <article class="detail shell">
+    <a class="back" href="/">← {ui.back}</a>
+
+    <header class="detail-head">
+      <p class="eyebrow">{ui.productsEyebrow}</p>
+      <h1>{product.name}</h1>
+      <p class="detail-tagline">{product.tagline[lang]}</p>
+      <p class="detail-desc">{product.description[lang]}</p>
+      <ul class="tags detail-tags">
+        {product.tags.map((tag) => (
+          <li>{tag}</li>
+        ))}
+      </ul>
+      <div class="detail-actions">
+        {product.links.map((link) => (
+          <a
+            class:list={['btn', link.href.includes('/releases/') ? 'btn-primary' : 'btn-ghost']}
+            href={link.href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {link.label[lang]} ↗
+          </a>
+        ))}
+      </div>
+    </header>
+
+    <figure class="detail-cover">
+      <Image
+        src={product.cover}
+        alt={coverAlt}
+        widths={[800, 1200, 1600]}
+        sizes="(max-width: 1000px) 100vw, 1000px"
+        format="webp"
+        quality={86}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
+
+    <section class="detail-section">
+      <h2>
+        <span class="eyebrow">{ui.highlightsEyebrow}</span>
+        {ui.highlightsTitle}
+      </h2>
+      <ol class="highlights">
+        {product.highlights.map((item, index) => (
+          <li>
+            <span class="hi-num">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{item.title[lang]}</h3>
+            <p>{item.body[lang]}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="detail-section">
+      <h2>
+        <span class="eyebrow">{ui.galleryEyebrow}</span>
+        {ui.galleryTitle}
+      </h2>
+      <div class="gallery">
+        {product.gallery.map((shot) => (
+          <figure>
+            <Image
+              src={shot.src}
+              alt={shot.alt[lang]}
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 720px) 100vw, 480px"
+              format="webp"
+              quality={82}
+              loading="lazy"
+            />
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <p class="disclaimer">{ui.productDisclaimer}</p>
+  </article>
+</BaseLayout>

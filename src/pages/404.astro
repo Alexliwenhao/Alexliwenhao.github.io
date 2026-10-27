@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t, type Lang } from '../i18n/ui';
+
+const lang: Lang = 'zh';
+const ui = t(lang);
+---
+
+<BaseLayout lang={lang} title={`404 · ${ui.siteTitle}`} description={ui.notFoundBody} altHref="/en/">
+  <section class="not-found shell">
+    <p class="eyebrow">404</p>
+    <h1>{ui.notFoundTitle}</h1>
+    <p>{ui.notFoundBody}</p>
+    <a class="btn btn-primary" href="/">{ui.notFoundCta}</a>
+  </section>
+</BaseLayout>

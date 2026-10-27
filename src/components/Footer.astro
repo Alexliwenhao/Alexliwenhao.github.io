@@ -1,0 +1,19 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const ui = t(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <p>© {year} Alex. {ui.footerRights}</p>
+    <p>{ui.footerBuilt}</p>
+    <p class="muted">{ui.footerIndependent}</p>
+  </div>
+</footer>

@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import type { Product } from '../data/products';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  product: Product;
+  lang: Lang;
+  index: number;
+}
+
+const { product, lang, index } = Astro.props;
+const ui = t(lang);
+const base = lang === 'zh' ? '' : '/en';
+const detailHref = `${base}/products/${product.slug}/`;
+const alt = `${product.name} — ${product.tagline[lang]}`;
+---
+
+<article class:list={['product-card', { featured: product.featured }]}>
+  <a class="cover" href={detailHref} aria-label={product.name}>
+    <Image
+      src={product.cover}
+      alt={alt}
+      widths={[640, 960, 1280, 1600]}
+      sizes="(max-width: 900px) 100vw, 55vw"
+      format="webp"
+      quality={85}
+      loading="lazy"
+    />
+  </a>
+  <div class="body">
+    <div class="meta">
+      <span class="num">{String(index + 1).padStart(2, '0')}</span>
+      <ul class="tags">
+        {product.tags.slice(0, 3).map((tag) => (
+          <li>{tag}</li>
+        ))}
+      </ul>
+    </div>
+    <h3><a href={detailHref}>{product.name}</a></h3>
+    <p class="tagline">{product.tagline[lang]}</p>
+    <p class="card-desc">{product.description[lang]}</p>
+    <div class="links">
+      <a class="detail-link" href={detailHref}>
+        {ui.productDetail} <span aria-hidden="true">→</span>
+      </a>
+      {product.links.slice(0, 2).map((link) => (
+        <a href={link.href} target="_blank" rel="noreferrer">
+          {link.label[lang]} ↗
+        </a>
+      ))}
+    </div>
+  </div>
+</article>

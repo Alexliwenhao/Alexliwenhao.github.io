@@ -1,0 +1,25 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const ui = t(lang);
+---
+
+<section class="hero shell">
+  <p class="eyebrow">{ui.heroEyebrow}</p>
+  <h1>
+    {ui.heroTitleTop}<br />
+    <span class="grad">{ui.heroTitleBottom}</span>
+  </h1>
+  <p class="lead">{ui.heroLead}</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#products">{ui.ctaProducts}</a>
+    <a class="btn btn-ghost" href="https://github.com/Alexliwenhao" target="_blank" rel="noreferrer">
+      {ui.ctaGithub}
+    </a>
+  </div>
+</section>
